@@ -1,11 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { Box, Typography } from '@mui/material'
 
-function PlanDetail() {
-  const [plan, setPlan] = useState(null) // nobody ever sets this
-
+function PlanDetail({ plan }: { plan: { id: string; title: string; questions: unknown[] } | null }) {
   return (
     <Box sx={{ flex: 1, p: 4 }}>
       <Typography variant="h6">

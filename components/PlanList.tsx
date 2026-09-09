@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import { List, ListItemButton } from '@mui/material'
-import { getPlans } from '@/services/plans'
+import { getPlans, type Plan } from '@/services/plans'
 
-function PlanList() {
-  const [plans, setPlans] = useState([])
-  const [selectedPlan, setSelectedPlan] = useState(null)
+function PlanList({selectedPlan, onSelect}:{selectedPlan: Plan | null; onSelect: (plan: Plan) => void}) {
+  const [plans, setPlans] = useState<Plan[]>([])
 
   // ── STEP 1: Fetch plans ────────────────────────────────────────────────────
   // Add a useEffect here that runs once on mount.
   // Call getPlans() and store the result in plans.
 
+  useEffect(() => {
+    async function loadPlans() {
+      const data = await getPlans()
+      setPlans(data)
+    }
+    loadPlans()
+  }, []
+)
 
   // ──────────────────────────────────────────────────────────────────────────
 
@@ -21,7 +28,7 @@ function PlanList() {
         <ListItemButton
           key={p.id}
           selected={selectedPlan?.id === p.id}
-          onClick={() => setSelectedPlan(p)}
+          onClick={() => onSelect(p)}
         >
           {p.title}
         </ListItemButton>
